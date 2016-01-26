@@ -107,9 +107,9 @@ function allFilesReturned(){
 }
 
 function checkIgnoreFiles(_filename){
-  // Creating an answer variable, which is automatically true i.e. I am assuming that
+  // Creating an allowFile variable, which is automatically true i.e. I am assuming that
   // the file names aren't going to be ignored until proved otherwise
-  var ans = true;
+  var allowFile = true;
 
   // Looping through each of the filetypes (or names) that I have stored in the ignoreFiles array,
   for(f in ignoreFiles){
@@ -120,11 +120,11 @@ function checkIgnoreFiles(_filename){
     {
       // If this string contains a name or filetype which I have added to the ignoreFiles array, then
       // change the answer to false
-      ans = false;
+      allowFile = false;
     }
   }
   // Return true or false, depending on if this filename contains, or is, a file which we have chosen to
   // ignore i.e. if this function returns true, then the files name and contents will be saved, whereas
   // if it returns false, the file details will not be stored
-  return ans;
+  return allowFile;
 }
