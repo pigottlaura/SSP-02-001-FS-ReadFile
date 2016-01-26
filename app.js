@@ -8,4 +8,10 @@ fs.readdir("./", filesReturned);
 
 function filesReturned(err, files){
   console.log("Files returned from Directory");
+
+  for(f in files)
+  {
+    console.log(files[f]);
+  }
+
 }
