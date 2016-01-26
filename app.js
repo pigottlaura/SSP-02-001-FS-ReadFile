@@ -22,8 +22,14 @@ function filesReturned(err, files){
     // to find a better way to test if it is the current file)
     if(files[f] !== "app.js")
     {
-      // Logging out the file name for each file
       console.log(files[f]);
+
+      // Logging out the file name for each file as well
+      // it's contents
+      fs.readFile(files[f], "utf8", function(err, result){
+        console.log(files[f]);
+        console.log(result + "\n");
+      });
     }
   }
 
