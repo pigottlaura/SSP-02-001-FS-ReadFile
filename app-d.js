@@ -57,6 +57,15 @@ function filesReturned(err, fileDir){
     // that exist in the same directory as it
     if(checkIgnoreFiles(currentFile))
     {
+      // Creating a temporary date object (so I can access the current time)
+      var currentDate = new Date();
+
+      // Creating a current time variable, so that I can check to see when each
+      // is about to call the .readFile() method (that way I can see if these
+      // requests are happending in synchronously or asynchronously)
+      var currentTimestamp = currentDate.getTime();
+      console.log(fileDir[file] + " requested data at " + currentTimestamp);
+
       // Passing in a file from the array returned by the readdir() function.
       // Using the counter to itterate through each of these files.
       fs.readFile(currentFile, {encoding: "utf8"}, function(err, data){
@@ -64,12 +73,18 @@ function filesReturned(err, fileDir){
         var thisFile = {
           // Getting the name of the file from the file directory data, again
           // using the counter to identify to it
-          name:currentFile,
+          name:fileDir[file],
           // Getting the contents of the file from the parametre "data" that
           // was passed back to the readFile() function callback
           contents:data
         };
-        console.log(currentFile);
+
+        // Logging out when a file is in the process of being read - again to try and
+        // compare the time they open the .readFile() request, to the time which
+        // it is processed
+        currentTimestamp = currentDate.getTime();
+        console.log("Data " + "\"" + data + "\" returned data at " + currentTimestamp);
+
         // Pushing this temporary object into the allFiles array, so that it
         // can be stored and accessed later on i.e. once all files have been
         // returned
