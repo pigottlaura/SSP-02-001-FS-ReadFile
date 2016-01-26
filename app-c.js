@@ -1,6 +1,12 @@
+// According to http://stackoverflow.com/questions/14173150/how-do-i-create-a-line-break-in-a-javascript-string-to-feed-to-nodejs-to-write-t
+// both a return and a new line are required to cause a line break in a
+// txt file using JavaScript. Instead of repeatedly typing these, I am
+// storing them in the newLine variable
+var newLine = "\r\n";
+
 // Creating a searchResults variable to store the string that I want
 // to write to the search-results.txt file
-var searchResults = "";
+var searchResults = "SEARCH RESULTS - " + Date() + newLine + newLine;
 
 // Creating an ignoreFiles array, where I can list the filetypes (or
 // filenames) which I don't wish to store the details of i.e. their
@@ -54,7 +60,7 @@ function filesReturned(err, fileDir){
       if(checkIgnoreFiles(fileDir[counter]))
       {
         console.log(fileDir[counter]);
-        searchResults += fileDir[counter] + " " + result + ". ";
+        searchResults += fileDir[counter] + newLine + "\t" + result + newLine + newLine;
       }
 
       // Increasing the counter value, so that the next time this function
