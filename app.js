@@ -1,8 +1,11 @@
+
+var allFiles = [];
+var directoryFiles = [];
+
+var counter = 0;
+
 // Requiring the File System module
 var fs = require("fs");
-
-// Creating a counter to see how many files data has been returned
-var counter = 0;
 
 // Using the File System module to read the current
 // directory I am in, and calling the filesReturned callback
@@ -15,32 +18,48 @@ fs.readdir("./", filesReturned);
 function filesReturned(err, files){
   // Logging out a message so I know when the data has been returned
   console.log("Data returned from Directory \n");
+  directoryFiles = files;
 
-  // Looping through each file in the result
-  for(f in files)
+  readMyFiles();
+}
+
+function readMyFiles(){
+
+  console.log(directoryFiles.length);
+
+  var currentFile = directoryFiles[counter];
+
+  // Checking if the current filename is equal to this
+  // file's name. If it is, then is doesn't get printed out
+  // (Technically this is a cheat, will look at the api
+  // to find a better way to test if it is the current file)
+  if(currentFile !== "app.js");
   {
-    // Checking if the current filename is equal to this
-    // file's name. If it is, then is doesn't get printed out
-    // (Technically this is a cheat, will look at the api
-    // to find a better way to test if it is the current file)
-    if(files[f] !== "app.js")
-    {
-      // Logging out the file name for each file
-      console.log(files[f]);
+    // Logging out the contents of each file one at a time (using the counter to itterate)
+    fs.readFile(currentFile, "utf8", function(err, result){
+      // Creating a new object to store the information of this file temporarily
+      var thisFile = {fName:"Placeholder File Name", contents:result, fNum:0};
 
-      // Logging out the contents of each file Asynchronously
-      fs.readFile(files[f], "utf8", function(err, result){
-        console.log("Asynchronously returing file contents: " + result + "\n");
+      // Pushing this temporary object into the allFiles array
+      allFiles.push(thisFile);
+      counter++;
 
-        // Incrementing the counter to see how many files have been returned
-        counter++;
+      if(counter == 1)
+      {
+        allFilesReturned();
+      }else{
+        readMyFiles();
+      }
+    });
+  }
+}
 
-        // If all of the files have been returned, log out the following message
-        if(counter == files.length-1)
-        {
-          console.log("All files have been returned");
-        }
-      });
-    }
+function allFilesReturned(){
+  // If all of the files have been returned, log out the following message
+  console.log("All files have been returned");
+  //console.log(allFiles.length);
+  for(var i=0; i< allFiles.length; i++)
+  {
+    console.log("The contents of " + allFiles[i].fName + " is " + allFiles[i].contents);
   }
 }
