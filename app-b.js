@@ -14,11 +14,7 @@ var ignoreFiles = [
   ".js",
   ".tern-project",
   ".git"
-]
-
-// Creating a counter to monitor the current value of, and itterate
-// through each of the files found in the directory
-var counter = 0;
+];
 
 // Requiring the File System module
 var fs = require("fs");
@@ -48,10 +44,10 @@ function filesReturned(err, fileDir){
       // Creating a new object to store the information of this file temporarily
       var thisFile = {
         // Getting the name of the file from the file directory results, again
-        // using the counter to identify to it
+        // using i to identify to it
         name:fileDir[i],
-        // Passing in a file from the array returned by the readFileSync() function
-        // to get the contents of the file. Using the counter to itterate through
+        // Passing the current file into the readFileSync() function
+        // to get the contents of the file. Using i to itterate through
         // each of these files in turn.
         contents: fs.readFileSync(fileDir[i])
       };
