@@ -1,9 +1,6 @@
-// Creating an array to store each of the objects I will
-// create later one, which will each contain the filename
-// and contents for each of the files in the current directory.
-// These contents will not be printed out until all files have
-// been read (see filesReturned function)
-var allFiles = [];
+// Creating a searchResults variable to store the string that I want
+// to write to the search-results.txt file
+var searchResults = "";
 
 // Creating an ignoreFiles array, where I can list the filetypes (or
 // filenames) which I don't wish to store the details of i.e. their
@@ -12,7 +9,9 @@ var allFiles = [];
 // out everytime I run the app
 var ignoreFiles = [
   ".js",
-  ".tern-project"
+  ".tern-project",
+  ".git",
+  "search-results.txt"
 ]
 
 // Creating a counter to monitor the current value of, and itterate
@@ -54,20 +53,8 @@ function filesReturned(err, fileDir){
       // that exist in the same directory as it
       if(checkIgnoreFiles(fileDir[counter]))
       {
-        // Creating a new object to store the information of this file temporarily
-        var thisFile = {
-          // Getting the name of the file from the file directory results, again
-          // using the counter to identify to it
-          name:fileDir[counter],
-          // Getting the contents of the file from the parametre "result" that
-          // was passed back to the readFile() function callback
-          contents:result
-        };
-
-        // Pushing this temporary object into the allFiles array, so that it
-        // can be stored and accessed later on i.e. once all files have been
-        // returned
-        allFiles.push(thisFile);
+        console.log(fileDir[counter]);
+        searchResults += fileDir[counter] + " " + result + ". ";
       }
 
       // Increasing the counter value, so that the next time this function
@@ -89,21 +76,16 @@ function filesReturned(err, fileDir){
         // been logged out to the console yet. It has just been stored in the allFiles array
         console.log("All files have been read, and their data stored\nNote - some files may have been ignored due to your current settings");
 
-        allFilesReturned();
+        saveToTxtFile("search-results.txt", searchResults);
       }
     });
   }
 }
 
-function allFilesReturned(){
-  // Looping through each object we stored in the allFiles array. Each object
-  // will contain the filename and contents of each one of the files.
-  for(var i=0; i< allFiles.length; i++)
-  {
-    // Logging out the name of each file, along with it's contents, which are stored
-    // within an object, in the allFiles array
-    console.log("\t- The contents of " + allFiles[i].name + " was \"" + allFiles[i].contents + "\"");
-  }
+function saveToTxtFile(newFilename, text){
+  fs.writeFile(newFilename, text, function(err) {
+    console.log('\nYour search results have been saved');
+  });
 }
 
 function checkIgnoreFiles(_filename){
